@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"go/build"
 	"os"
-	"os/user"
 	"path/filepath"
 
 	"github.com/crgimenes/goConfig"
@@ -38,13 +38,7 @@ func main() {
 	}
 
 	if cfg.GoPath == "" {
-		var u *user.User
-		u, err = user.Current()
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		cfg.GoPath = u.HomeDir + "/go"
+		cfg.GoPath = build.Default.GOPATH
 	}
 
 	root := cfg.GoPath + "/src"
