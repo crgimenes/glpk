@@ -5,12 +5,13 @@ import (
 	"go/build"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/crgimenes/goConfig"
 )
 
 type config struct {
-	PackageName string `cfg:"pn"`
+	PackageName string `cfg:"name"`
 	GoPath      string
 }
 
@@ -21,7 +22,10 @@ func visit(path string, f os.FileInfo, err error) error {
 		return nil
 	}
 
-	if cfg.PackageName == f.Name() {
+	pkgName := strings.ToLower(cfg.PackageName)
+	dirName := strings.ToLower(f.Name())
+
+	if pkgName == dirName {
 		println(path)
 	}
 
@@ -35,6 +39,12 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 		return
+	}
+
+	if cfg.PackageName == "" {
+		println("Package name not defined.")
+		goConfig.Usage()
+		os.Exit(1)
 	}
 
 	if cfg.GoPath == "" {
