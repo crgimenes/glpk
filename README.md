@@ -1,11 +1,11 @@
-# gothere
+# glpk
 
 This is a small application to help you find the exact path of the packages or project in your GOPATH.
 
 ## Install
 
 ```
-go install github.com/crgimenes/gothere
+go install github.com/crgimenes/glpk
 ```
 
 ## Example of use
@@ -13,11 +13,11 @@ go install github.com/crgimenes/gothere
 ### Displays full path to the project
 
 ```
-gothere -name packageName
+glpk -name packageName
 ```
 
 ### Changes to the project directory automatically
 
 ```
-cd $(gothere -name packageName)
+cd $(glpk -name packageName)
 ```
