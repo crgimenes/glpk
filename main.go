@@ -26,7 +26,7 @@ func visit(path string, f os.FileInfo, err error) error {
 	dirName := strings.ToLower(f.Name())
 
 	if pkgName == dirName {
-		println(path)
+		fmt.Println(path)
 	}
 
 	return nil
