@@ -13,6 +13,8 @@ import (
 type config struct {
 	PackageName string `cfg:"name"`
 	GoPath      string
+	ListAll     bool
+	SkipVendor  bool `cfgDefault:"true"`
 }
 
 var cfg config
@@ -20,6 +22,12 @@ var cfg config
 func visit(path string, f os.FileInfo, err error) error {
 	if !f.IsDir() {
 		return nil
+	}
+
+	if cfg.SkipVendor {
+		if f.Name() == "vendor" {
+			return filepath.SkipDir
+		}
 	}
 
 	pkgName := strings.ToLower(cfg.PackageName)
@@ -35,6 +43,7 @@ func visit(path string, f os.FileInfo, err error) error {
 func main() {
 
 	cfg = config{}
+
 	err := goConfig.Parse(&cfg)
 	if err != nil {
 		fmt.Println(err)
