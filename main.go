@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"go/build"
 	"io"
@@ -71,9 +72,13 @@ func main() {
 	}
 
 	if cfg.PackageName == "" {
-		println("Package name not defined.")
-		goConfig.Usage()
-		return
+		lastPar := flag.NArg() - 1
+		cfg.PackageName = flag.Arg(lastPar)
+		if cfg.PackageName == "" {
+			println("Package name not defined.")
+			goConfig.Usage()
+			return
+		}
 	}
 
 	if cfg.GoPath == "" {
