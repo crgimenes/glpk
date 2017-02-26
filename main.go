@@ -22,7 +22,7 @@ type config struct {
 
 var cfg config
 
-func setPar() (err error) {
+func parseListPar() (err error) {
 	v := strings.Split(cfg.List, ",")
 
 	for _, p := range v {
@@ -86,7 +86,7 @@ func main() {
 
 	root := cfg.GoPath + "/src"
 
-	err = setPar()
+	err = parseListPar()
 	if err != nil {
 		println(err.Error())
 		return
