@@ -27,8 +27,8 @@ func setPar() (err error) {
 
 	for _, p := range v {
 		switch p {
-		case "vendor":
-			cfg.SkipVendor = false
+		case "skipvendor":
+			cfg.SkipVendor = true
 		case "all":
 			cfg.ListAll = true
 		default:
