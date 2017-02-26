@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"go/build"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -13,21 +14,37 @@ import (
 type config struct {
 	PackageName string `cfg:"name"`
 	GoPath      string
-	ListAll     bool
-	SkipVendor  bool `cfgDefault:"true"`
+	List        string `cfgDefault:"skipvendor"`
+	ListAll     bool   `cfg:"-"`
+	SkipVendor  bool   `cfg:"-"`
 }
 
 var cfg config
+
+func setPar() (err error) {
+	v := strings.Split(cfg.List, ",")
+
+	for _, p := range v {
+		switch p {
+		case "skipvendor":
+			cfg.SkipVendor = true
+		case "all":
+			cfg.SkipVendor = false
+			cfg.ListAll = true
+		default:
+			return fmt.Errorf("Unknow -list parameter %v", p)
+		}
+	}
+	return
+}
 
 func visit(path string, f os.FileInfo, err error) error {
 	if !f.IsDir() {
 		return nil
 	}
 
-	if cfg.SkipVendor {
-		if f.Name() == "vendor" {
-			return filepath.SkipDir
-		}
+	if cfg.SkipVendor && f.Name() == "vendor" {
+		return filepath.SkipDir
 	}
 
 	pkgName := strings.ToLower(cfg.PackageName)
@@ -35,6 +52,9 @@ func visit(path string, f os.FileInfo, err error) error {
 
 	if pkgName == dirName {
 		fmt.Println(path)
+		if !cfg.ListAll {
+			return io.EOF
+		}
 	}
 
 	return nil
@@ -46,14 +66,14 @@ func main() {
 
 	err := goConfig.Parse(&cfg)
 	if err != nil {
-		fmt.Println(err)
+		println(err.Error())
 		return
 	}
 
 	if cfg.PackageName == "" {
 		println("Package name not defined.")
 		goConfig.Usage()
-		os.Exit(1)
+		return
 	}
 
 	if cfg.GoPath == "" {
@@ -62,15 +82,21 @@ func main() {
 
 	root := cfg.GoPath + "/src"
 
+	err = setPar()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+
 	_, err = os.Stat(root)
 	if err != nil {
-		fmt.Println(err)
+		println(err.Error())
 		return
 	}
 
 	err = filepath.Walk(root, visit)
-	if err != nil {
-		fmt.Println(err)
+	if err != nil && err != io.EOF {
+		println(err.Error())
 		return
 	}
 }
