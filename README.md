@@ -13,11 +13,20 @@ go install github.com/crgimenes/lpk
 ### Displays full path to the project
 
 ```
-lpk -name packageName
+lpk packageName
 ```
 
 ### Changes to the project directory automatically
 
 ```
-cd $(lpk -name packageName)
+cd $(lpk packageName)
 ```
+
+### Tips
+
+Set up an alias for the cd and jump straight to your project directory.
+
+```
+alias gofn="cd $(lpk gofn)"
+```
+
