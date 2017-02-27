@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"go/build"
@@ -20,7 +21,11 @@ type config struct {
 	SkipVendor  bool   `cfg:"-"`
 }
 
+var errNameNotDefined = errors.New("Name not defined")
+var errNameNotFound = errors.New("Name not found")
+
 var cfg config
+var nameFound bool
 
 func parseListPar() (err error) {
 	v := strings.Split(cfg.List, ",")
@@ -51,6 +56,7 @@ func visit(path string, f os.FileInfo, err error) error {
 	dirName := strings.ToLower(f.Name())
 
 	if pkgName == dirName {
+		nameFound = true
 		fmt.Println(path)
 		if !cfg.ListAll {
 			return io.EOF
@@ -60,13 +66,11 @@ func visit(path string, f os.FileInfo, err error) error {
 	return nil
 }
 
-func main() {
-
+func find() (err error) {
 	cfg = config{}
 
-	err := goConfig.Parse(&cfg)
+	err = goConfig.Parse(&cfg)
 	if err != nil {
-		println(err.Error())
 		return
 	}
 
@@ -74,8 +78,7 @@ func main() {
 		lastPar := flag.NArg() - 1
 		cfg.PackageName = flag.Arg(lastPar)
 		if cfg.PackageName == "" {
-			println("Package name not defined.")
-			goConfig.Usage()
+			err = errNameNotDefined
 			return
 		}
 	}
@@ -88,19 +91,29 @@ func main() {
 
 	err = parseListPar()
 	if err != nil {
-		println(err.Error())
 		return
 	}
 
 	_, err = os.Stat(root)
 	if err != nil {
-		println(err.Error())
 		return
 	}
 
 	err = filepath.Walk(root, visit)
-	if err != nil && err != io.EOF {
+	if err == nil || err == io.EOF {
+		err = nil
+		if !nameFound {
+			err = errNameNotFound
+		}
+	}
+
+	return
+}
+
+func main() {
+	err := find()
+	if err != nil {
 		println(err.Error())
-		return
+		os.Exit(1)
 	}
 }
