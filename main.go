@@ -68,11 +68,6 @@ func visit(path string, f os.FileInfo, err error) error {
 
 func find() (err error) {
 
-	err = goConfig.Parse(&cfg)
-	if err != nil {
-		return
-	}
-
 	if cfg.PackageName == "" {
 		lastPar := flag.NArg() - 1
 		cfg.PackageName = flag.Arg(lastPar)
@@ -109,8 +104,18 @@ func find() (err error) {
 	return
 }
 
+func configAndFind() (err error) {
+	err = goConfig.Parse(&cfg)
+	if err != nil {
+		return
+	}
+
+	err = find()
+	return
+}
+
 func main() {
-	err := find()
+	err := configAndFind()
 	if err != nil {
 		println(err.Error())
 		os.Exit(1)
