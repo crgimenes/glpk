@@ -67,7 +67,6 @@ func visit(path string, f os.FileInfo, err error) error {
 }
 
 func find() (err error) {
-	cfg = config{}
 
 	err = goConfig.Parse(&cfg)
 	if err != nil {
