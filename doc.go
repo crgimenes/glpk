@@ -1,24 +1,22 @@
-//Copyright (c) 2017 Cesar Gimenes - MIT License
-//
-//lpk A small utility that looks for projects in your
-//GOPATH and returns the full path to the project directory.
-
 /*
-   A small utility that looks for projects in your GOPATH and returns the full path to the project directory.
+   Copyright (c) 2017 Cesar Gimenes - MIT License
+
+   A small utility that looks for projects in your
+   GOPATH and returns the full path to the project directory.
 
    Parameters
 
    Find package/software and stop on the first occurrence
 
-        lpk packageName
+       lpk packageName
 
-    Lists all occurrences including in the vendor directory
+   Lists all occurrences including in the vendor directory
 
-        lpk -list:all packageName
+       lpk -list:all packageName
 
-    Lists all occurrences except in the vendor directory
+   Lists all occurrences except in the vendor directory
 
-        lpk -list:all,skipvendor packageName
+       lpk -list:all,skipvendor packageName
 
 */
 
