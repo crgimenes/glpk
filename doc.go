@@ -7,6 +7,7 @@
 //  Find package/software and stop on the first occurrence
 //
 //      lpk packageName
+//
 //  Lists all occurrences including in the vendor directory
 //
 //      lpk -list:all packageName
