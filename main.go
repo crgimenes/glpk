@@ -22,7 +22,7 @@ type config struct {
 }
 
 var errNameNotDefined = errors.New("Name not defined")
-var errNameNotFound = errors.New("Name not found")
+var errPackageNotFound = errors.New("Package not found")
 
 var cfg config
 var nameFound bool
@@ -97,7 +97,7 @@ func find() (err error) {
 	if err == nil || err == io.EOF {
 		err = nil
 		if !nameFound {
-			err = errNameNotFound
+			err = errPackageNotFound
 		}
 	}
 
