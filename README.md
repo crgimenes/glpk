@@ -6,11 +6,11 @@
 [![Go project version](https://badge.fury.io/go/github.com%2Fcrgimenes%2Flpk.svg)](https://badge.fury.io/go/github.com%2Fcrgimenes%2Flpk)
 [![MIT Licensed](https://img.shields.io/badge/license-MIT-green.svg)](https://tldrlegal.com/license/mit-license)
 
-A small utility that looks for projects in your GOPATH and returns the full path to the project directory.
+A small utility that looks for package in your GOPATH and returns the full path to the package directory.
 
 ## The problem and the solution
 
-All my projects are in GOPATH and I got tired of typing *cd* and the full path to the package / software directory.
+All my projects are in GOPATH and I got tired of typing *cd* and the full path to the package/software directory.
 
 So I created this little utility that looks in GOPATH and returns the full path to the project, so I can create an alias to change to the project directory and also can search by the project by name, etc.
 
@@ -24,10 +24,10 @@ go install github.com/crgimenes/lpk
 
 ### Displays full path to the project
 
-Search for the *project* in GOPATH and displays the full path. By default, lpk stops searching after it encounters the first occurrence.
+Search for the *project* in GOPATH and displays the full path type *lpk project* where *project* is the name of the package or software you are looking for. By default, lpk stops searching after it encounters the first occurrence.
 
 ```
-lpk project
+lpk project 
 ```
 
 To list all *project* occurrences use the parameter **-list** with "all" string
