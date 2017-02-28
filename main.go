@@ -104,14 +104,11 @@ func find() (err error) {
 	return
 }
 
-func configAndFind() (err error) {
-	err = goConfig.Parse(&cfg)
-	if err != nil {
-		return
+func configAndFind() error {
+	if err := goConfig.Parse(&cfg); err != nil {
+		return err
 	}
-
-	err = find()
-	return
+	return find()
 }
 
 func main() {
