@@ -55,14 +55,14 @@ Set up an alias for the *cd* and jump straight to your project directory.
 Example, let's say you want to create an alias to jump directly to the *project*  directory. Just change project by *project* name in your GOPATH
 
 ```
-alias gofn="cd $(lpk project)"
+alias aliasname="cd $(lpk project)"
 ```
 ---
 
 Another tip, if you are using **macOS** the following command creates an alias to open the Finder in the *project* directory. Remember to change the word project by the name of your *project* in GOPATH
 
 ```
-alias ogc="open $(lpk project)"
+alias aliasname="open $(lpk project)"
 ```
 ---
 
