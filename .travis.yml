@@ -21,4 +21,4 @@ before_script:
 script:
     - go test $(go list ./... | grep -v vendor)
     - ./cover.sh
-    - ./cc-test-reporter after-build -t gocov --exit-code $TRAVIS_TEST_RESULT
+    - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
