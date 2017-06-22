@@ -5,18 +5,22 @@ go:
     - 1.7
     - 1.8
     - master
-    
 
-before_install:
-  - go get -t -v ./...
+os:
+    - linux
+ 
+env:
+    global:
+        - CC_TEST_REPORTER_ID=ea6f87d43c94d484f9c84dab62b68b6e6219db635f838b6b50c3aef04bf0a407
+        - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
+
+before_script:
+    - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+    - chmod +x ./cc-test-reporter
+    - go get github.com/axw/gocov/gocov
+    - chmod 700 ./cover.sh
 
 script:
-  - go test -race -coverprofile=coverage.txt -covermode=atomic
-  
-matrix:
-    allow_failures:
-      - go: 'master'
-    fast_finish: true
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+    - go test $(go list ./... | grep -v vendor)
+    - ./cover.sh
+    - ./cc-test-reporter after-build -t gocov --exit-code $TRAVIS_TEST_RESULT
