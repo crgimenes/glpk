@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/crgimenes/goConfig"
+	"github.com/crgimenes/goconfig"
 )
 
 type config struct {
@@ -105,7 +105,7 @@ func find() (err error) {
 }
 
 func configAndFind() error {
-	if err := goConfig.Parse(&cfg); err != nil {
+	if err := goconfig.Parse(&cfg); err != nil {
 		return err
 	}
 	return find()
