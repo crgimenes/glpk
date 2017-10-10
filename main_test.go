@@ -90,8 +90,11 @@ func TestFind(t *testing.T) {
 }
 
 func TestConfigAndFind(t *testing.T) {
-	os.Setenv("GOPAHT", "./testdata")
-	err := configAndFind()
+	err := os.Setenv("GOPAHT", "./testdata")
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = configAndFind()
 	if err != nil {
 		t.Fatal(err)
 	}
