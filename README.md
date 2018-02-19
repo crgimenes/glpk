@@ -17,7 +17,7 @@ So I created this little utility that looks in GOPATH and returns the full path 
 ## Install
 
 ```
-go get github.com/crgimenes/lpk
+go get github.com/go-br/lpk
 ```
 
 ## Example of use
